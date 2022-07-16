@@ -1,6 +1,3 @@
-from cProfile import label
-from math import fabs
-from numpy import False_
 import pyautogui
 from tkinter import *
 from tkinter.filedialog import *
@@ -13,7 +10,7 @@ root = Tk()
 root.title("SnappyShot")
 root.lift()
 
-filePath = "/Users/kevz3742/Desktop/Capture"
+filePath = "UR FILE PATH"
 pathExists = True
 i = 1
 
