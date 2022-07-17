@@ -10,7 +10,7 @@ root = Tk()
 root.title("SnappyShot")
 root.lift()
 
-filePath = "UR FILE PATH"
+filePath = "/Users/kevz3742/Desktop/Capture"
 pathExists = True
 i = 1
 
@@ -43,20 +43,39 @@ def screenshot():
     root.withdraw()
     root.update()
     time.sleep(.1)
+
     capture = pyautogui.screenshot()
     capture.save(r"" + filePath)
+
     root.destroy()
     sys.exit(0)
 
 def dragScreenshot():
-    with mouse.Listener(on_click=onClick) as listener:
-        listener.join()
-
     root.withdraw()
     root.update()
     time.sleep(.1)
-    capture = pyautogui.screenshot(region=(dragCoords[0], dragCoords[1], dragCoords[2], dragCoords[3]))
+
+    with mouse.Listener(on_click=onClick) as listener:
+        listener.join()
+
+    # right, down 
+    if(dragCoords[0] <= dragCoords[2] and dragCoords[1] <= dragCoords[3]):
+        print('1')
+        capture = pyautogui.screenshot(region=(dragCoords[0]*2, dragCoords[1]*2, (dragCoords[2]-dragCoords[0])*2, (dragCoords[3]-dragCoords[1])*2))
+    # left, down
+    elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] <= dragCoords[3]):
+        print('2')
+        capture = pyautogui.screenshot(region=(dragCoords[2]*2, dragCoords[1]*2, (dragCoords[0]-dragCoords[2])*2, (dragCoords[3]-dragCoords[1])*2))
+    # right, up
+    elif(dragCoords[0] <= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
+        print('3')
+        capture = pyautogui.screenshot(region=(dragCoords[0]*2, dragCoords[3]*2, (dragCoords[2]-dragCoords[0])*2, (dragCoords[1]-dragCoords[3])*2))
+    # left, up
+    elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
+        print('4')
+        capture = pyautogui.screenshot(region=(dragCoords[2]*2, dragCoords[3]*2, (dragCoords[0]-dragCoords[2])*2, (dragCoords[1]-dragCoords[3])*2))
     capture.save(r"" + filePath)
+
     root.destroy()
     sys.exit(0)
 
