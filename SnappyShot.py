@@ -1,6 +1,6 @@
 import pyautogui
 from tkinter import *
-from tkinter.filedialog import *
+import tkinter.filedialog
 import time
 import sys
 from pynput import mouse
@@ -10,19 +10,33 @@ root = Tk()
 root.title("SnappyShot")
 root.lift()
 
-filePath = "/Users/kevz3742/Desktop/Capture"
-pathExists = True
-i = 1
+currdir = os.getcwd()
+filePath = os.getcwd() + "/Capture"
+firstCall = True
 
-while pathExists:
-    if(not os.path.exists(filePath + ".png")):
-        filePath = filePath + ".png"
-        pathExists = False
-    elif(os.path.exists(filePath + str(i) + ".png")):
-        i += 1
-    else:
-        filePath = filePath + str(i) + ".png"
-        pathExists = False
+copyNum = 1
+
+def createFileName():
+    global filePath, copyNum, firstCall
+
+    if(not firstCall):
+        filePath = filePath[:-4]
+
+    pathExists = True
+    
+    while pathExists:
+        if(not os.path.exists(filePath + ".png")):
+            filePath = filePath + ".png"
+            pathExists = False
+        elif(os.path.exists(filePath + str(copyNum) + ".png")):
+            copyNum += 1
+        else:
+            filePath = filePath + str(copyNum) + ".png"
+            pathExists = False
+
+    firstCall = False
+
+createFileName()
 
 dragCoords = [None, None, None, None]
 
@@ -79,14 +93,25 @@ def dragScreenshot():
     root.destroy()
     sys.exit(0)
 
+def searchForFilePath():
+    global currdir, filePath
+    tempdir = tkinter.filedialog.askdirectory(initialdir=currdir, title='Please select a directory')
+    if len(tempdir) > 0:
+        print ("You chose: %s" % tempdir)
+        currdir = tempdir
+        filePath = tempdir + "/Capture" + str(copyNum) + ".png"
+        createFileName()
+
 def quit():
     sys.exit(0)
 
 fullScreenCapture = Button(text="Full Screen Capture", command=screenshot, width=15)
 dragCapture = Button(text="Drag Capture", command=dragScreenshot, width=15)
 quitApp = Button(text='❌', command=quit)
-fullScreenCapture.grid(row=1,column=1)
-dragCapture.grid(row=2,column=1)
-quitApp.grid(row=1 ,column=2, rowspan=2, columnspan=2)
+filePathButton = Button(master = root, text = 'Choose File Path', width = 15, command=searchForFilePath)
+fullScreenCapture.grid(row=0,column=0)
+dragCapture.grid(row=1,column=0)
+quitApp.grid(row=1,column=1)
+filePathButton.grid(row=2, column=0)
 
 root.mainloop()
