@@ -66,6 +66,11 @@ def screenshot():
 
 def dragScreenshot():
     root.withdraw()
+    dragWindow = Toplevel(root)
+    dragWindow.title('')
+    width, height= pyautogui.size()
+    dragWindow.geometry(str(width) + "x" + str(height) + "+0+0")
+    dragWindow.attributes('-alpha',0.1)
     root.update()
     time.sleep(.1)
 
@@ -90,6 +95,7 @@ def dragScreenshot():
         capture = pyautogui.screenshot(region=(dragCoords[2]*2, dragCoords[3]*2, (dragCoords[0]-dragCoords[2])*2, (dragCoords[1]-dragCoords[3])*2))
     capture.save(r"" + filePath)
 
+    dragWindow.destroy()
     root.destroy()
     sys.exit(0)
 
