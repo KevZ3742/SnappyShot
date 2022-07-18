@@ -69,7 +69,7 @@ def dragScreenshot():
     dragWindow = Toplevel(root)
     dragWindow.title('')
     width, height= pyautogui.size()
-    dragWindow.geometry(str(width) + "x" + str(height) + "+0+0")
+    dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
     dragWindow.attributes('-alpha',0.1)
     root.update()
     time.sleep(.1)
