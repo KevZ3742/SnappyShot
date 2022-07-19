@@ -16,6 +16,8 @@ firstCall = True
 
 copyNum = 1
 
+held = False
+
 def createFileName():
     global filePath, copyNum, firstCall
 
@@ -41,17 +43,23 @@ createFileName()
 dragCoords = [None, None, None, None]
 
 def onClick(x, y, button, pressed):
-    global dragCoords
+    global dragCoords, held
+
     if button == button.left:
         if(pressed):
             dragCoords[0] = x
             dragCoords[1] = y
+            held = True
             print(dragCoords)
         else:
             dragCoords[2] = x
             dragCoords[3] = y
             print(dragCoords)
             return False
+
+def onMove(x, y):
+    if(held):
+        pass
 
 def screenshot():
     root.withdraw()
@@ -71,10 +79,11 @@ def dragScreenshot():
     width, height= pyautogui.size()
     dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
     dragWindow.attributes('-alpha',0.1)
+    
     root.update()
     time.sleep(.3)
 
-    with mouse.Listener(on_click=onClick) as listener:
+    with mouse.Listener(on_click=onClick, on_move=onMove) as listener:
         listener.join()
 
     # right, down 
