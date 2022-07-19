@@ -56,7 +56,7 @@ def onClick(x, y, button, pressed):
 def screenshot():
     root.withdraw()
     root.update()
-    time.sleep(.1)
+    time.sleep(.3)
 
     capture = pyautogui.screenshot()
     capture.save(r"" + filePath)
@@ -72,7 +72,7 @@ def dragScreenshot():
     dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
     dragWindow.attributes('-alpha',0.1)
     root.update()
-    time.sleep(.1)
+    time.sleep(.3)
 
     with mouse.Listener(on_click=onClick) as listener:
         listener.join()
