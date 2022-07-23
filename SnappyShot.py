@@ -117,6 +117,12 @@ def searchForFilePath():
         filePath = tempdir + "/Capture" + str(copyNum) + ".png"
         createFileName()
 
+def toggle():
+    if(toggleDoubleRetina.config("text")[-1] == "On"):
+        toggleDoubleRetina.config(text="Off")
+    else:
+        toggleDoubleRetina.config(text="On")
+
 def quit():
     sys.exit(0)
 
@@ -124,9 +130,12 @@ fullScreenCapture = Button(text="Full Screen Capture", command=screenshot, width
 dragCapture = Button(text="Drag Capture", command=dragScreenshot, width=15)
 quitApp = Button(text='❌', command=quit)
 filePathButton = Button(master = root, text = 'Choose File Path', width = 15, command=searchForFilePath)
+toggleDoubleRetina = Button(text="Off", width=15, command=toggle)
+
 fullScreenCapture.grid(row=0,column=0)
 dragCapture.grid(row=1,column=0)
-quitApp.grid(row=1,column=1)
+quitApp.grid(row=1,column=1, rowspan=2)
 filePathButton.grid(row=2, column=0)
+toggleDoubleRetina.grid(row=3, column=0)
 
 root.mainloop()
