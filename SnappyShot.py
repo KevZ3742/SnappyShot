@@ -18,6 +18,8 @@ copyNum = 1
 
 held = False
 
+multiplier = 1
+
 def createFileName():
     global filePath, copyNum, firstCall
 
@@ -89,19 +91,19 @@ def dragScreenshot():
     # right, down 
     if(dragCoords[0] <= dragCoords[2] and dragCoords[1] <= dragCoords[3]):
         print('1')
-        capture = pyautogui.screenshot(region=(dragCoords[0]*2, dragCoords[1]*2, (dragCoords[2]-dragCoords[0])*2, (dragCoords[3]-dragCoords[1])*2))
+        capture = pyautogui.screenshot(region=(dragCoords[0]*multiplier, dragCoords[1]*multiplier, (dragCoords[2]-dragCoords[0])*multiplier, (dragCoords[3]-dragCoords[1])*multiplier))
     # left, down
     elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] <= dragCoords[3]):
         print('2')
-        capture = pyautogui.screenshot(region=(dragCoords[2]*2, dragCoords[1]*2, (dragCoords[0]-dragCoords[2])*2, (dragCoords[3]-dragCoords[1])*2))
+        capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[1]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[3]-dragCoords[1])*multiplier))
     # right, up
     elif(dragCoords[0] <= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
         print('3')
-        capture = pyautogui.screenshot(region=(dragCoords[0]*2, dragCoords[3]*2, (dragCoords[2]-dragCoords[0])*2, (dragCoords[1]-dragCoords[3])*2))
+        capture = pyautogui.screenshot(region=(dragCoords[0]*multiplier, dragCoords[3]*multiplier, (dragCoords[2]-dragCoords[0])*multiplier, (dragCoords[1]-dragCoords[3])*2))
     # left, up
     elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
         print('4')
-        capture = pyautogui.screenshot(region=(dragCoords[2]*2, dragCoords[3]*2, (dragCoords[0]-dragCoords[2])*2, (dragCoords[1]-dragCoords[3])*2))
+        capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[3]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[1]-dragCoords[3])*multiplier))
     capture.save(r"" + filePath)
 
     dragWindow.destroy()
@@ -118,10 +120,14 @@ def searchForFilePath():
         createFileName()
 
 def toggle():
-    if(toggleDoubleRetina.config("text")[-1] == "On"):
-        toggleDoubleRetina.config(text="Off")
+    global multiplier
+
+    if(toggleDoubleRetina.config("text")[-1] == "Double Retina: On"):
+        toggleDoubleRetina.config(text="Double Retina: Off")
+        multiplier = 1
     else:
-        toggleDoubleRetina.config(text="On")
+        toggleDoubleRetina.config(text="Double Retina: On")
+        multiplier = 2
 
 def quit():
     sys.exit(0)
@@ -130,7 +136,7 @@ fullScreenCapture = Button(text="Full Screen Capture", command=screenshot, width
 dragCapture = Button(text="Drag Capture", command=dragScreenshot, width=15)
 quitApp = Button(text='❌', command=quit)
 filePathButton = Button(master = root, text = 'Choose File Path', width = 15, command=searchForFilePath)
-toggleDoubleRetina = Button(text="Off", width=15, command=toggle)
+toggleDoubleRetina = Button(text="Double Retina: Off", width=15, command=toggle)
 
 fullScreenCapture.grid(row=0,column=0)
 dragCapture.grid(row=1,column=0)
