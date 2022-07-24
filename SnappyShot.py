@@ -16,8 +16,6 @@ firstCall = True
 
 copyNum = 1
 
-held = False
-
 multiplier = 1
 
 def createFileName():
@@ -41,27 +39,6 @@ def createFileName():
     firstCall = False
 
 createFileName()
-
-dragCoords = [None, None, None, None]
-
-def onClick(x, y, button, pressed):
-    global dragCoords, held
-
-    if button == button.left:
-        if(pressed):
-            dragCoords[0] = x
-            dragCoords[1] = y
-            held = True
-            print(dragCoords)
-        else:
-            dragCoords[2] = x
-            dragCoords[3] = y
-            print(dragCoords)
-            return False
-
-def onMove(x, y):
-    if(held):
-        pass
 
 def screenshot():
     root.withdraw()
@@ -87,6 +64,26 @@ def dragScreenshot():
      
     root.update()
     time.sleep(.3)
+
+    dragCoords = [None, None, None, None]
+    held = False
+
+    def onClick(x, y, button, pressed):
+        if button == button.left:
+            if(pressed):
+                dragCoords[0] = x
+                dragCoords[1] = y
+                held = True
+                print(dragCoords)
+            else:
+                dragCoords[2] = x
+                dragCoords[3] = y
+                print(dragCoords)
+                return False
+
+    def onMove(x, y):
+        if(held):
+            pass
 
     with mouse.Listener(on_click=onClick, on_move=onMove) as listener:
         listener.join()
