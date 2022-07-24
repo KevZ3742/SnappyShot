@@ -81,7 +81,10 @@ def dragScreenshot():
     width, height= pyautogui.size()
     dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
     dragWindow.attributes('-alpha',0.1)
-    
+
+    canvas = Canvas(dragWindow, width=width, height=height, cursor="cross")
+    canvas.pack(fill="both", expand=1)
+     
     root.update()
     time.sleep(.3)
 
@@ -90,19 +93,15 @@ def dragScreenshot():
 
     # right, down 
     if(dragCoords[0] <= dragCoords[2] and dragCoords[1] <= dragCoords[3]):
-        print('1')
         capture = pyautogui.screenshot(region=(dragCoords[0]*multiplier, dragCoords[1]*multiplier, (dragCoords[2]-dragCoords[0])*multiplier, (dragCoords[3]-dragCoords[1])*multiplier))
     # left, down
     elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] <= dragCoords[3]):
-        print('2')
         capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[1]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[3]-dragCoords[1])*multiplier))
     # right, up
     elif(dragCoords[0] <= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
-        print('3')
         capture = pyautogui.screenshot(region=(dragCoords[0]*multiplier, dragCoords[3]*multiplier, (dragCoords[2]-dragCoords[0])*multiplier, (dragCoords[1]-dragCoords[3])*2))
     # left, up
     elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
-        print('4')
         capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[3]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[1]-dragCoords[3])*multiplier))
     capture.save(r"" + filePath)
 
