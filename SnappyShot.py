@@ -55,9 +55,9 @@ def dragScreenshot():
     root.withdraw()
     dragWindow = Toplevel(root)
     dragWindow.title('')
-    width, height= pyautogui.size()
+    width, height = pyautogui.size()
     dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
-    dragWindow.attributes('-alpha',0.1)
+    dragWindow.attributes('-alpha', .1)
 
     canvas = Canvas(dragWindow, width=width, height=height, cursor="cross")
     canvas.pack(fill="both", expand=1)
@@ -69,6 +69,7 @@ def dragScreenshot():
     held = False
 
     def onClick(x, y, button, pressed):
+        global held
         if button == button.left:
             if(pressed):
                 dragCoords[0] = x
