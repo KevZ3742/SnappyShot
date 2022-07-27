@@ -66,7 +66,6 @@ class Indicator(Tk):
         elif(self.dragCoords[0] >= self.dragCoords[2] and self.dragCoords[1] >= self.dragCoords[3]):
             capture = pyautogui.screenshot(region=(self.dragCoords[2]*multiplier, self.dragCoords[3]*multiplier, (self.dragCoords[0]-self.dragCoords[2])*multiplier, (self.dragCoords[1]-self.dragCoords[3])*multiplier))
         
-        
         capture.save(r"" + filePath)
 
         sys.exit(0)
