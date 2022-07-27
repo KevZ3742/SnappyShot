@@ -50,8 +50,8 @@ class Indicator(Tk):
 
         self.dragCoords[2] = event.x
         self.dragCoords[3] = event.y
-
-        self.canvas.destroy()
+        print(self.dragCoords)
+        self.destroy()
 
         # right, down 
         if(self.dragCoords[0] <= self.dragCoords[2] and self.dragCoords[1] <= self.dragCoords[3]):
@@ -111,6 +111,7 @@ def dragScreenshot():
     dragWindow.title('')
     dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
     dragWindow.attributes('-alpha',0.1)
+    dragWindow.attributes('-fullscreen',True)
      
     root.update()
     time.sleep(.3)
