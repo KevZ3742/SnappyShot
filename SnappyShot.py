@@ -97,7 +97,7 @@ def dragScreenshot():
         capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[1]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[3]-dragCoords[1])*multiplier))
     # right, up
     elif(dragCoords[0] <= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
-        capture = pyautogui.screenshot(region=(dragCoords[0]*multiplier, dragCoords[3]*multiplier, (dragCoords[2]-dragCoords[0])*multiplier, (dragCoords[1]-dragCoords[3])*2))
+        capture = pyautogui.screenshot(region=(dragCoords[0]*multiplier, dragCoords[3]*multiplier, (dragCoords[2]-dragCoords[0])*multiplier, (dragCoords[1]-dragCoords[3])*multiplier))
     # left, up
     elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
         capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[3]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[1]-dragCoords[3])*multiplier))
