@@ -18,6 +18,59 @@ copyNum = 1
 
 multiplier = 1
 
+class Indicator(Tk):
+    pressed = False
+    held = False
+    width, height= pyautogui.size()
+    dragCoords = [None, None, None, None]
+
+    def __init__(self):
+        super().__init__()
+        self.canvas = Canvas(self, width=self.width, height=self.height, cursor="cross")
+        self.canvas.pack(fill="both", expand=1)
+        self.canvas.bind("<Button-1>", self.onClick)
+        self.canvas.bind("<B1-Motion>", self.onMove)
+        self.canvas.bind("<ButtonRelease-1>", self.onRelease)
+
+    def onClick(self, event):
+        if(not self.pressed):
+            self.pressed = True
+            self.held = True
+            self.dragCoords[0] =  event.x
+            self.dragCoords[1] = event.y
+            self.start = event.x, event.y
+            self.indicator = self.canvas.create_rectangle(*self.start, *self.start, width=3, fill='grey')
+
+    def onMove(self, event):
+        if(self.held):
+            self.canvas.coords(self.indicator, *self.start, event.x, event.y)
+
+    def onRelease(self, event):
+        self.held = False
+
+        self.dragCoords[2] = event.x
+        self.dragCoords[3] = event.y
+
+        self.canvas.destroy()
+
+        # right, down 
+        if(self.dragCoords[0] <= self.dragCoords[2] and self.dragCoords[1] <= self.dragCoords[3]):
+            capture = pyautogui.screenshot(region=(self.dragCoords[0]*multiplier, self.dragCoords[1]*multiplier, (self.dragCoords[2]-self.dragCoords[0])*multiplier, (self.dragCoords[3]-self.dragCoords[1])*multiplier))
+        # left, down
+        elif(self.dragCoords[0] >= self.dragCoords[2] and self.dragCoords[1] <= self.dragCoords[3]):
+            capture = pyautogui.screenshot(region=(self.dragCoords[2]*multiplier, self.dragCoords[1]*multiplier, (self.dragCoords[0]-self.dragCoords[2])*multiplier, (self.dragCoords[3]-self.dragCoords[1])*multiplier))
+        # right, up
+        elif(self.dragCoords[0] <= self.dragCoords[2] and self.dragCoords[1] >= self.dragCoords[3]):
+            capture = pyautogui.screenshot(region=(self.dragCoords[0]*multiplier, self.dragCoords[3]*multiplier, (self.dragCoords[2]-self.dragCoords[0])*multiplier, (self.dragCoords[1]-self.dragCoords[3])*multiplier))
+        # left, up
+        elif(self.dragCoords[0] >= self.dragCoords[2] and self.dragCoords[1] >= self.dragCoords[3]):
+            capture = pyautogui.screenshot(region=(self.dragCoords[2]*multiplier, self.dragCoords[3]*multiplier, (self.dragCoords[0]-self.dragCoords[2])*multiplier, (self.dragCoords[1]-self.dragCoords[3])*multiplier))
+        
+        
+        capture.save(r"" + filePath)
+
+        sys.exit(0)
+        
 def createFileName():
     global filePath, copyNum, firstCall
 
@@ -53,60 +106,15 @@ def screenshot():
 
 def dragScreenshot():
     root.withdraw()
-    dragWindow = Toplevel(root)
-    dragWindow.title('')
-    width, height = pyautogui.size()
-    dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
-    dragWindow.attributes('-alpha', .1)
 
-    canvas = Canvas(dragWindow, width=width, height=height, cursor="cross")
-    canvas.pack(fill="both", expand=1)
+    width, height = pyautogui.size()
+    dragWindow = Indicator()
+    dragWindow.title('')
+    dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
+    dragWindow.attributes('-alpha',0.1)
      
     root.update()
     time.sleep(.3)
-
-    dragCoords = [None, None, None, None]
-    held = False
-
-    def onClick(x, y, button, pressed):
-        global held
-        if button == button.left:
-            if(pressed):
-                dragCoords[0] = x
-                dragCoords[1] = y
-                held = True
-                print(dragCoords)
-            else:
-                dragCoords[2] = x
-                dragCoords[3] = y
-                print(dragCoords)
-                return False
-
-    def onMove(x, y):
-        if(held):
-            pass
-
-    with mouse.Listener(on_click=onClick, on_move=onMove) as listener:
-        listener.join()
-
-    # right, down 
-    if(dragCoords[0] <= dragCoords[2] and dragCoords[1] <= dragCoords[3]):
-        capture = pyautogui.screenshot(region=(dragCoords[0]*multiplier, dragCoords[1]*multiplier, (dragCoords[2]-dragCoords[0])*multiplier, (dragCoords[3]-dragCoords[1])*multiplier))
-    # left, down
-    elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] <= dragCoords[3]):
-        capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[1]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[3]-dragCoords[1])*multiplier))
-    # right, up
-    elif(dragCoords[0] <= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
-        capture = pyautogui.screenshot(region=(dragCoords[0]*multiplier, dragCoords[3]*multiplier, (dragCoords[2]-dragCoords[0])*multiplier, (dragCoords[1]-dragCoords[3])*multiplier))
-    # left, up
-    elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
-        capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[3]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[1]-dragCoords[3])*multiplier))
-    
-    capture.save(r"" + filePath)
-
-    dragWindow.destroy()
-    root.destroy()
-    sys.exit(0)
 
 def searchForFilePath():
     global currdir, filePath
