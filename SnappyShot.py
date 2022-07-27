@@ -101,6 +101,7 @@ def dragScreenshot():
     # left, up
     elif(dragCoords[0] >= dragCoords[2] and dragCoords[1] >= dragCoords[3]):
         capture = pyautogui.screenshot(region=(dragCoords[2]*multiplier, dragCoords[3]*multiplier, (dragCoords[0]-dragCoords[2])*multiplier, (dragCoords[1]-dragCoords[3])*multiplier))
+    
     capture.save(r"" + filePath)
 
     dragWindow.destroy()
