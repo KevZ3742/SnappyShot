@@ -77,7 +77,7 @@ class Indicator(Tk):
         
         capture.save(r"" + filePath)
 
-        sys.exit(0)
+        quit()
         
 def createFileName():
     global filePath, copyNum, firstCall
