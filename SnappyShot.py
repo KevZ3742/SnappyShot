@@ -119,8 +119,10 @@ def dragScreenshot():
     dragWindow = Indicator()
     dragWindow.title('')
     dragWindow.geometry(str(width) + "x" + str(height) + "-0+0")
-    dragWindow.attributes('-alpha',0.1)
-    dragWindow.attributes('-fullscreen',True)
+    dragWindow.attributes('-alpha', 0.1)
+
+    if(os_ == "Windows"):
+        dragWindow.attributes('-fullscreen', True)
      
     root.update()
     time.sleep(.3)
