@@ -3,12 +3,21 @@ from tkinter import *
 import tkinter.filedialog
 import time
 import sys
+from sys import platform
 from pynput import mouse
 import os.path
 
 root = Tk()
 root.title("SnappyShot")
 root.lift()
+
+if platform == "linux" or platform == "linux2":
+    os_ = "Linux"
+elif platform == "darwin":
+    os_ = "MacOS"
+elif platform == "win32":
+    os_ = "Windows"
+
 
 currdir = os.getcwd()
 filePath = os.getcwd() + "/Capture"
@@ -101,7 +110,7 @@ def screenshot():
     capture.save(r"" + filePath)
 
     root.destroy()
-    sys.exit(0)
+    quit()
 
 def dragScreenshot():
     root.withdraw()
